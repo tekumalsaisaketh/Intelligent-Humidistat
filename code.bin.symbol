@@ -1,0 +1,33 @@
+< THE SYMBOL TABLE >  code.bin  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+CURRENT_TEMPERATURE      	00400     	1         	VAR       	(NOSEG)   
+CURRENT_HUMIDITY         	00401     	1         	VAR       	(NOSEG)   
+IDEAL_HUMIDITY           	00402     	1         	VAR       	(NOSEG)   
+NEGATIVE_FLAG            	00403     	1         	VAR       	(NOSEG)   
+ST1                      	00404     	-1        	LABEL     	(NOSEG)   
+MAIN                     	00428     	-1        	LABEL     	(NOSEG)   
+INC_HUM                  	00448     	-1        	LABEL     	(NOSEG)   
+GETTEMP                  	00454     	-1        	NEAR      	(NOSEG)   
+X0                       	00456     	-1        	LABEL     	(NOSEG)   
+X4                       	00471     	-1        	LABEL     	(NOSEG)   
+POS                      	0049A     	-1        	LABEL     	(NOSEG)   
+CON                      	004A2     	-1        	LABEL     	(NOSEG)   
+GETHUMDT                 	004A8     	-1        	NEAR      	(NOSEG)   
+X100                     	004C5     	-1        	LABEL     	(NOSEG)   
+DISPLAY_LCD              	004D7     	-1        	NEAR      	(NOSEG)   
+HH                       	00666     	-1        	LABEL     	(NOSEG)   
+NN                       	00686     	-1        	LABEL     	(NOSEG)   
+CONVBCD                  	008B9     	-1        	NEAR      	(NOSEG)   
+X3                       	008BD     	-1        	LABEL     	(NOSEG)   
+SUB1                     	008C6     	-1        	LABEL     	(NOSEG)   
+XL                       	008C9     	-1        	LABEL     	(NOSEG)   
+SUB2                     	008CC     	-1        	LABEL     	(NOSEG)   
+XM                       	008CE     	-1        	LABEL     	(NOSEG)   
+XN                       	008D1     	-1        	LABEL     	(NOSEG)   
+AD_ISR                   	008D8     	-1        	LABEL     	(NOSEG)   
+===================================================================================================
+[ 19-04-2021  --  10:35:03 ] 
+< END >
+ 

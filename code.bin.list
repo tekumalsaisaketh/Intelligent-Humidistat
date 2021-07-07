@@ -1,0 +1,809 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+code.bin -- emu8086 assembler version: 4.08  
+ 
+[ 19-04-2021  --  10:35:03 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       #make_bin#
+[   2]        :                                       
+[   3]        :                                       #LOAD_SEGMENT=FFFFh#
+[   4]        :                                       #LOAD_OFFSET=0000h#
+[   5]        :                                       
+[   6]        :                                       #CS=0000h#
+[   7]        :                                       #IP=0000h#
+[   8]        :                                       
+[   9]        :                                       #DS=0000h#
+[  10]        :                                       #ES=0000h#
+[  11]        :                                       
+[  12]        :                                       #SS=0000h#
+[  13]        :                                       #SP=FFFEh#
+[  14]        :                                       
+[  15]        :                                       #AX=0000h#
+[  16]        :                                       #BX=0000h#
+[  17]        :                                       #CX=0000h#
+[  18]        :                                       #DX=0000h#
+[  19]        :                                       #SI=0000h#
+[  20]        :                                       #DI=0000h#
+[  21]        :                                       #BP=0000h#
+[  22]        :                                       
+[  23]        :                                       ; add your code here
+[  24]        :                                       ;jump to the start of the code - reset address is kept at 0000:0000
+[  25]        :                                       ;as this is only a limited simulation
+[  26]    0000: E9 01 04                              jmp     st1
+[  27]        :                                       ;jmp st1 - takes 3 bytes followed by nop that is 4 bytes
+[  28]    0003: 90                                    nop
+[  29]        :                                       ;int 1 is not used so 1 x4 = 00004h - it is stored with 0
+[  30]    0004: 00 00                                 dw      0000
+[  31]    0006: 00 00                                 dw      0000
+[  32]        :                                       ;eoc - is used as nmi - ip value points to ad_isr and cs value will
+[  33]        :                                       ;remain at 0000
+[  34]    0008: D8 08                                 dw      ad_isr
+[  35]    000A: 00 00                                 dw      0000
+[  36]        :                                       ;int 3 to int 255 unused so ip and cs intialized to 0000
+[  37]        :                                       ;from 3x4 = 0000cH
+[  38]    000C: 00 00 00 00 00 00 00 00 00 00 00 00   		 db     1012 dup(0)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[  39]        :                                       
+[  40]    0400: 00                                    		 current_temperature db ?;current temperature
+[  41]    0401: 00                                    		 current_humidity db ?;current humidity
+[  42]    0402: 00                                    		 ideal_humidity db ?;ideal humidity
+[  43]    0403: 00                                    		 negative_flag db 00h
+[  44]        :                                       
+[  45]        :                                       		 port1A equ 00h
+[  46]        :                                       		 port1B equ 02h
+[  47]        :                                       		 port1C equ 04h ;PC4 - SOC OF ADC
+[  48]        :                                       ;PC0, PC1, PC2 connected to ADD OF ADC (USED FOR SELECTING THE ;FIRST & SECOND INPUT CHANNEL OF ADC)
+[  49]        :                                       		 creg1 equ 06h ;control register (8255_1)
+[  50]        :                                       
+[  51]        :                                       ;8253 for generating clock signal to ADC
+[  52]        :                                       		cnt0 equ 10h
+[  53]        :                                       		cnt1 equ 12h
+[  54]        :                                       		cnt2 equ 14h
+[  55]        :                                       		creg3 equ 16h
+[  56]        :                                       
+[  57]    0404: FA                                    st1:      cli
+[  58]        :                                       ; intialize ds, es,ss to start of RAM
+[  59]    0405: B8 00 02                              mov       ax,0200h
+[  60]    0408: 8E D8                                 mov       ds,ax
+[  61]    040A: 8E C0                                 mov       es,ax
+[  62]    040C: 8E D0                                 mov       ss,ax
+[  63]    040E: BC FE FF                              mov       sp,0FFFEH
+[  64]    0411: BE 00 00                              mov       si,0000
+[  65]        :                                       
+[  66]        :                                       ;intialise portb as input and portC as ouput of 8255_1 connected to ADC
+[  67]    0414: B0 82                                 mov       al,82h
+[  68]    0416: E6 06                                 out       06h,al
+[  69]        :                                       
+[  70]        :                                       ;intialize porta  as input & b& c as output of 8255_2 LCD
+[  71]    0418: B0 88                                 mov       al,88h
+[  72]    041A: E6 0E                                 out       0eh,al
+[  73]        :                                       
+[  74]        :                                       ;initialise 8254
+[  75]    041C: B0 36                                 		mov			al,00110110b ; write 16 bit count for counter0 mode3
+[  76]    041E: E6 16                                 		out			16h , al
+[  77]    0420: B0 05                                 		mov			al,5
+[  78]    0422: E6 10                                 		out			10H , al
+[  79]    0424: B0 00                                 		mov			al,0
+[  80]    0426: E6 10                                 		out			10H , al
+[  81]        :                                       
+[  82]    0428:                                       main:
+[  83]    0428: E8 7D 00                              		call getHumdt
+[  84]    042B: E8 26 00                              		call getTemp
+[  85]    042E: E8 A6 00                              		call display_LCD
+[  86]    0431: A0 02 04                              		mov 	al, ideal_humidity
+[  87]    0434: 8A 1E 01 04                           		mov		bl, current_humidity
+[  88]    0438: 3A D8                                 		cmp		bl, al
+[  89]    043A: 77 0C                                 		ja		inc_hum
+[  90]    043C: B0 0E                                 		mov 	al,0eh
+[  91]    043E: E6 06                                 		out 	06h,al
+[  92]    0440: E8 83 04                              		call 	sub1
+[  93]    0443: E8 86 04                              		call 	sub2
+[  94]    0446: EB E0                                 		jmp 	main
+[  95]    0448:                                       inc_hum:
+[  96]    0448: B0 0F                                 		mov 	al,0fh
+[  97]    044A: E6 06                                 		out		06h,al
+[  98]    044C: E8 77 04                              		call 	sub1
+[  99]    044F: E8 7A 04                              		call	sub2
+[ 100]    0452: EB D4                                 		jmp		main
+[ 101]    0454:                                       getTemp proc near
+[ 102]        :                                       
+[ 103]        :                                       ;start with channel 0
+[ 104]    0454: B6 00                                 	  mov       dh,0
+[ 105]        :                                       ;select channel
+[ 106]    0456: BF 01 00                              x0:		  mov       di,1
+[ 107]        :                                       ;di is made 1 to check whether nmi_isr is executed
+[ 108]    0459: 8A C6                                 mov		al,dh
+[ 109]    045B: E6 04                                 		  out		04h,al
+[ 110]        :                                       ;give ale
+[ 111]    045D: 0C 20                                 or        al,00100000b
+[ 112]    045F: E6 04                                 		  out       04h,al
+[ 113]        :                                       
+[ 114]        :                                       ;give soc
+[ 115]    0461: 0C 10                                 or		al,00010000b
+[ 116]    0463: E6 04                                 		  out		04h,al
+[ 117]        :                                       
+[ 118]    0465: 90                                    		  nop
+[ 119]    0466: 90                                    		  nop
+[ 120]    0467: 90                                    		  nop
+[ 121]    0468: 90                                    		  nop
+[ 122]        :                                       ;make soc 0
+[ 123]    0469: 24 EF                                 		  and       al,11101111b
+[ 124]    046B: E6 04                                 		  out       04h,al
+[ 125]        :                                       ;make ale 0
+[ 126]    046D: 24 DF                                 		  and       al,11011111b
+[ 127]    046F: E6 04                                 		  out       04h,al
+[ 128]    0471: 83 FF 00                              x4:		  cmp       di,0
+[ 129]    0474: 75 FB                                 		  jnz       x4
+[ 130]    0476: 8A 04                                 		  mov 		al,[si]
+[ 131]    0478: A2 00 04                              		  mov		current_temperature, al
+[ 132]    047B: A2 02 04                              		  mov		ideal_humidity, al
+[ 133]    047E: 80 2E 00 04 28                        		  sub		current_temperature, 40
+[ 134]    0483: 80 3E 00 04 00                        		  cmp 		current_temperature, 0
+[ 135]    0488: 7D 10                                 		  jge 		pos
+[ 136]    048A: C6 06 03 04 01                        		  mov		negative_flag, 01h
+[ 137]    048F: A0 02 04                              		  mov		al, ideal_humidity
+[ 138]    0492: B1 28                                 		  mov		cl, 40
+[ 139]    0494: 2A C8                                 		  sub		cl, al
+[ 140]    0496: 8A C1                                 		  mov		al, cl
+[ 141]    0498: EB 08                                 		  jmp	 	con
+[ 142]        :                                       
+[ 143]    049A:                                       pos:
+[ 144]    049A: C6 06 03 04 00                        		  mov		negative_flag, 00h
+[ 145]    049F: A0 00 04                              		  mov		al, current_temperature
+[ 146]    04A2:                                       con:
+[ 147]    04A2: E8 14 04                              		  call		convBCD
+[ 148]    04A5: C2 54 04                              		  ret		getTemp
+[ 149]        :                                       endp
+[ 150]        :                                       
+[ 151]    04A8:                                       getHumdt proc near
+[ 152]        :                                       
+[ 153]        :                                       ;start with channel 1
+[ 154]    04A8: B6 01                                 	  mov       dh,1
+[ 155]        :                                       ;select channel
+[ 156]    04AA: BF 01 00                              		  mov       di,1
+[ 157]        :                                       ;di is made 1 to check whether nmi_isr is executed
+[ 158]    04AD: 8A C6                                 mov		al,dh
+[ 159]    04AF: E6 04                                 		  out		04h,al
+[ 160]        :                                       ;give ale
+[ 161]    04B1: 0C 20                                 or        al,00100000b
+[ 162]    04B3: E6 04                                 		  out       04h,al
+[ 163]        :                                       
+[ 164]        :                                       ;give soc
+[ 165]    04B5: 0C 10                                 or		al,00010000b
+[ 166]    04B7: E6 04                                 		  out		04h,al
+[ 167]        :                                       
+[ 168]    04B9: 90                                    		  nop
+[ 169]    04BA: 90                                    		  nop
+[ 170]    04BB: 90                                    		  nop
+[ 171]    04BC: 90                                    		  nop
+[ 172]        :                                       ;make soc 0
+[ 173]    04BD: 24 EF                                 		  and       al,11101111b
+[ 174]    04BF: E6 04                                 		  out       04h,al
+[ 175]        :                                       ;make ale 0
+[ 176]    04C1: 24 DF                                 		  and       al,11011111b
+[ 177]    04C3: E6 04                                 		  out       04h,al
+[ 178]    04C5: 83 FF 00                              x100:	  cmp       di,0
+[ 179]    04C8: 75 FB                                 		  jnz       x100
+[ 180]    04CA: 8A 04                                 		  mov 		al,[si]
+[ 181]    04CC: A2 01 04                              		  mov		current_humidity, al
+[ 182]    04CF: E8 E7 03                              		  call		convBCD
+[ 183]    04D2: 8B D3                                 		  mov		dx, bx
+[ 184]    04D4: C2 A8 04                              		  ret		getHumdt
+[ 185]        :                                       		  endp
+[ 186]        :                                       
+[ 187]    04D7:                                       display_lcd PROC NEAR ;Display temperature and humidity on LCD
+[ 188]    04D7: 50                                    		  push ax
+[ 189]    04D8: 51                                    		  push cx
+[ 190]    04D9: 56                                    		  push si
+[ 191]    04DA: E8 E9 03                              		  call  sub1
+[ 192]        :                                       ;set mode for 2 line - to doxq so - make rw - 0 first
+[ 193]        :                                       ;followed by rs
+[ 194]        :                                       ;followed by e
+[ 195]    04DD: B0 07                                 		  mov       al,07h
+[ 196]    04DF: E6 04                                 		  out       04h,al
+[ 197]    04E1: E8 E2 03                              		  call      sub1
+[ 198]        :                                       
+[ 199]    04E4: B0 05                                 		  mov       al,05h  ;enable high
+[ 200]    04E6: E6 04                                 		  out       04h,al
+[ 201]    04E8: E8 DB 03                              		  call      sub1
+[ 202]        :                                       
+[ 203]    04EB: B0 04                                 		  mov       al,04h  ;enable low
+[ 204]    04ED: E6 04                                 		  out       04h,al
+[ 205]    04EF: E8 D4 03                              		  call      sub1
+[ 206]        :                                       
+[ 207]    04F2: B0 38                                 		  mov       al,38h   ;initialization lcd
+[ 208]    04F4: E6 00                                 		  out       00h,al
+[ 209]    04F6: B0 00                                 		  mov       al,00h
+[ 210]    04F8: E6 04                                 		  out       04h,al
+[ 211]    04FA: E8 C9 03                              		  call      sub1
+[ 212]        :                                       ;set mode agian - ha sto be done twice
+[ 213]    04FD: B0 07                                 mov       al,07h
+[ 214]    04FF: E6 0C                                 out       0Ch,al
+[ 215]    0501: E8 C2 03                              call      sub1
+[ 216]    0504: B0 05                                 mov       al,05h
+[ 217]    0506: E6 0C                                 out       0Ch,al
+[ 218]    0508: E8 BB 03                              call      sub1
+[ 219]    050B: B0 04                                 mov       al,04h
+[ 220]    050D: E6 0C                                 out       0Ch,al
+[ 221]    050F: E8 B4 03                              call      sub1
+[ 222]    0512: B0 38                                 mov       al,38h   ;diplay blinking at cursor
+[ 223]    0514: E6 08                                 out       08h,al
+[ 224]    0516: B0 00                                 mov       al,00h
+[ 225]    0518: E6 0C                                 out       0Ch,al
+[ 226]    051A: E8 A9 03                              call      sub1
+[ 227]        :                                       ;command to display blinking cursor - 0fh
+[ 228]        :                                       
+[ 229]    051D: B0 07                                 mov       al,07h
+[ 230]    051F: E6 0C                                 out       0Ch,al
+[ 231]    0521: E8 A2 03                              call      sub1
+[ 232]    0524: B0 05                                 mov       al,05h
+[ 233]    0526: E6 0C                                 out       0Ch,al
+[ 234]    0528: E8 9B 03                              call      sub1
+[ 235]    052B: B0 04                                 mov       al,04h
+[ 236]    052D: E6 0C                                 out       0Ch,al
+[ 237]    052F: E8 94 03                              call      sub1
+[ 238]    0532: B0 0F                                 mov       al,0fh
+[ 239]    0534: E6 08                                 out       08h,al
+[ 240]    0536: B0 00                                 mov       al,00h
+[ 241]    0538: E6 0C                                 out       0Ch,al
+[ 242]    053A: E8 89 03                              call      sub1
+[ 243]        :                                       ;increment cursor command  - 06h
+[ 244]    053D: B0 07                                 mov       al,07h
+[ 245]    053F: E6 0C                                 out       0Ch,al
+[ 246]    0541: E8 82 03                              call      sub1
+[ 247]    0544: B0 05                                 mov       al,05h
+[ 248]    0546: E6 0C                                 out       0Ch,al
+[ 249]    0548: E8 7B 03                              call      sub1
+[ 250]    054B: B0 04                                 mov       al,04h
+[ 251]    054D: E6 0C                                 out       0Ch,al
+[ 252]    054F: E8 74 03                              call      sub1
+[ 253]    0552: B0 06                                 mov       al,06h
+[ 254]    0554: E6 08                                 out       08h,al
+[ 255]    0556: B0 00                                 mov       al,00h
+[ 256]    0558: E6 0C                                 out       0Ch,al
+[ 257]    055A: E8 69 03                              call      sub1
+[ 258]        :                                       ;clear display  command - 01h
+[ 259]    055D: B0 07                                 mov       al,07h
+[ 260]    055F: E6 0C                                 out       0Ch,al
+[ 261]    0561: E8 62 03                              call      sub1
+[ 262]    0564: B0 05                                 mov       al,05h
+[ 263]    0566: E6 0C                                 out       0Ch,al
+[ 264]    0568: E8 5B 03                              call      sub1
+[ 265]    056B: B0 04                                 mov       al,04h
+[ 266]    056D: E6 0C                                 out       0Ch,al
+[ 267]    056F: E8 54 03                              call      sub1
+[ 268]    0572: B0 01                                 mov       al,01h
+[ 269]    0574: E6 08                                 out       08h,al
+[ 270]    0576: B0 00                                 mov       al,00h
+[ 271]    0578: E6 0C                                 out       0Ch,al
+[ 272]    057A: E8 49 03                              call      sub1
+[ 273]        :                                       ;move cursor to line 1 position 1 command - 80h
+[ 274]    057D: B0 07                                 mov       al,07h
+[ 275]    057F: E6 0C                                 out       0Ch,al
+[ 276]    0581: E8 42 03                              call      sub1
+[ 277]    0584: B0 05                                 mov       al,05h
+[ 278]    0586: E6 0C                                 out       0Ch,al
+[ 279]    0588: E8 3B 03                              call      sub1
+[ 280]    058B: B0 04                                 mov       al,04h
+[ 281]    058D: E6 0C                                 out       0Ch,al
+[ 282]    058F: E8 34 03                              call      sub1
+[ 283]    0592: B0 80                                 mov       al,80h
+[ 284]    0594: E6 08                                 out       08h,al
+[ 285]    0596: B0 00                                 mov       al,00h
+[ 286]    0598: E6 0C                                 out       0Ch,al
+[ 287]    059A: E8 29 03                              call      sub1
+[ 288]        :                                       
+[ 289]        :                                       
+[ 290]        :                                       
+[ 291]    059D: B0 07                                 mov       al,07h
+[ 292]    059F: E6 0C                                 out       0Ch,al
+[ 293]    05A1: E8 22 03                              call      sub1
+[ 294]    05A4: B0 05                                 mov       al,05h
+[ 295]    05A6: E6 0C                                 out       0Ch,al
+[ 296]    05A8: E8 1B 03                              call      sub1
+[ 297]    05AB: B0 05                                 mov       al,05h
+[ 298]    05AD: E6 0C                                 out       0Ch,al
+[ 299]    05AF: E8 14 03                              call      sub1
+[ 300]    05B2: B0 54                                 mov       al,'T'
+[ 301]    05B4: E6 08                                 out       08h,al
+[ 302]    05B6: B0 01                                 mov       al,01
+[ 303]    05B8: E6 0C                                 out       0Ch,al
+[ 304]    05BA: E8 09 03                              call      sub1
+[ 305]        :                                       
+[ 306]    05BD: B0 07                                 mov       al,07h
+[ 307]    05BF: E6 0C                                 out       0Ch,al
+[ 308]    05C1: E8 02 03                              call      sub1
+[ 309]    05C4: B0 05                                 mov       al,05h
+[ 310]    05C6: E6 0C                                 out       0Ch,al
+[ 311]    05C8: E8 FB 02                              call      sub1
+[ 312]    05CB: B0 05                                 mov       al,05h
+[ 313]    05CD: E6 0C                                 out       0Ch,al
+[ 314]    05CF: E8 F4 02                              call      sub1
+[ 315]    05D2: B0 65                                 mov       al,'e'
+[ 316]    05D4: E6 08                                 out       08h,al
+[ 317]    05D6: B0 01                                 mov       al,01
+[ 318]    05D8: E6 0C                                 out       0Ch,al
+[ 319]    05DA: E8 E9 02                              call      sub1
+[ 320]        :                                       
+[ 321]        :                                       
+[ 322]    05DD: B0 07                                 mov       al,07h
+[ 323]    05DF: E6 0C                                 out       0Ch,al
+[ 324]    05E1: E8 E2 02                              call      sub1
+[ 325]    05E4: B0 05                                 mov       al,05h
+[ 326]    05E6: E6 0C                                 out       0Ch,al
+[ 327]    05E8: E8 DB 02                              call      sub1
+[ 328]    05EB: B0 05                                 mov       al,05h
+[ 329]    05ED: E6 0C                                 out       0Ch,al
+[ 330]    05EF: E8 D4 02                              call      sub1
+[ 331]    05F2: B0 6D                                 mov       al,'m'
+[ 332]    05F4: E6 08                                 out       08h,al
+[ 333]    05F6: B0 01                                 mov       al,01
+[ 334]    05F8: E6 0C                                 out       0Ch,al
+[ 335]    05FA: E8 C9 02                              call      sub1
+[ 336]        :                                       
+[ 337]    05FD: B0 07                                 mov       al,07h
+[ 338]    05FF: E6 0C                                 out       0Ch,al
+[ 339]    0601: E8 C2 02                              call      sub1
+[ 340]    0604: B0 05                                 mov       al,05h
+[ 341]    0606: E6 0C                                 out       0Ch,al
+[ 342]    0608: E8 BB 02                              call      sub1
+[ 343]    060B: B0 05                                 mov       al,05h
+[ 344]    060D: E6 0C                                 out       0Ch,al
+[ 345]    060F: E8 B4 02                              call      sub1
+[ 346]    0612: B0 70                                 mov       al,'p'
+[ 347]    0614: E6 08                                 out       08h,al
+[ 348]    0616: B0 01                                 mov       al,01
+[ 349]    0618: E6 0C                                 out       0Ch,al
+[ 350]    061A: E8 A9 02                              call      sub1
+[ 351]        :                                       
+[ 352]        :                                       
+[ 353]    061D: B0 07                                 mov       al,07h
+[ 354]    061F: E6 0C                                 out       0Ch,al
+[ 355]    0621: E8 A2 02                              call      sub1
+[ 356]    0624: B0 05                                 mov       al,05h
+[ 357]    0626: E6 0C                                 out       0Ch,al
+[ 358]    0628: E8 9B 02                              call      sub1
+[ 359]    062B: B0 05                                 mov       al,05h
+[ 360]    062D: E6 0C                                 out       0Ch,al
+[ 361]    062F: E8 94 02                              call      sub1
+[ 362]    0632: B0 20                                 mov       al,20h
+[ 363]    0634: E6 08                                 out       08h,al
+[ 364]    0636: B0 01                                 mov       al,01
+[ 365]    0638: E6 0C                                 out       0Ch,al
+[ 366]    063A: E8 89 02                              call      sub1  ;space
+[ 367]    063D: 80 3E 03 04 00                        	cmp negative_flag,00h
+[ 368]    0642: 74 22                                 	jz hh
+[ 369]    0644: B0 07                                 	mov       al,07h
+[ 370]    0646: E6 0C                                 	out       0Ch,al
+[ 371]    0648: E8 7B 02                              	call      sub1
+[ 372]    064B: B0 05                                 	mov       al,05h
+[ 373]    064D: E6 0C                                 	out       0Ch,al
+[ 374]    064F: E8 74 02                              	call      sub1
+[ 375]    0652: B0 05                                 	mov       al,05h
+[ 376]    0654: E6 0C                                 	out       0Ch,al
+[ 377]    0656: E8 6D 02                              	call      sub1
+[ 378]    0659: B0 2D                                 	mov       al,'-'
+[ 379]    065B: E6 08                                 	out       08h,al
+[ 380]    065D: B0 01                                 	mov       al,01
+[ 381]    065F: E6 0C                                 	out       0Ch,al
+[ 382]    0661: E8 62 02                              	call      sub1
+[ 383]    0664: EB 20                                 	jmp nn
+[ 384]        :                                       
+[ 385]    0666:                                       hh:
+[ 386]    0666: B0 07                                 	mov       al,07h
+[ 387]    0668: E6 0C                                 	out       0Ch,al
+[ 388]    066A: E8 59 02                              	call      sub1
+[ 389]    066D: B0 05                                 	mov       al,05h	
+[ 390]    066F: E6 0C                                 	out       0Ch,al
+[ 391]    0671: E8 52 02                              	call      sub1
+[ 392]    0674: B0 05                                 	mov       al,05h
+[ 393]    0676: E6 0C                                 	out       0Ch,al
+[ 394]    0678: E8 4B 02                              	call      sub1
+[ 395]    067B: B0 20                                 	mov       al,20h
+[ 396]    067D: E6 08                                 	out       08h,al
+[ 397]    067F: B0 01                                 	mov       al,01
+[ 398]    0681: E6 0C                                 	out       0Ch,al
+[ 399]    0683: E8 40 02                              	call      sub1
+[ 400]        :                                       
+[ 401]        :                                       ;mov bx,current_temperature
+[ 402]    0686:                                       nn:
+[ 403]    0686: B0 07                                 	mov       al,07h
+[ 404]    0688: E6 0C                                 	out       0Ch,al
+[ 405]    068A: E8 39 02                              	call      sub1
+[ 406]    068D: B0 05                                 	mov       al,05h
+[ 407]    068F: E6 0C                                 	out       0Ch,al
+[ 408]    0691: E8 32 02                              	call      sub1
+[ 409]    0694: B0 05                                 	mov       al,05h
+[ 410]    0696: E6 0C                                 	out       0Ch,al
+[ 411]    0698: E8 2B 02                              	call      sub1
+[ 412]    069B: 8A C7                                 	mov       al,bh  ;prints bh
+[ 413]    069D: E6 08                                 	out       08h,al
+[ 414]    069F: B0 01                                 	mov       al,01
+[ 415]    06A1: E6 0C                                 	out       0Ch,al
+[ 416]    06A3: E8 20 02                              	call      sub1
+[ 417]        :                                       
+[ 418]    06A6: B0 07                                 	mov       al,07h
+[ 419]    06A8: E6 0C                                 	out       0Ch,al
+[ 420]    06AA: E8 19 02                              	call      sub1
+[ 421]    06AD: B0 05                                 	mov       al,05h	
+[ 422]    06AF: E6 0C                                 	out       0Ch,al
+[ 423]    06B1: E8 12 02                              	call      sub1
+[ 424]    06B4: B0 05                                 	mov       al,05h
+[ 425]    06B6: E6 0C                                 	out       0Ch,al
+[ 426]    06B8: E8 0B 02                              	call      sub1
+[ 427]    06BB: 8A C3                                 	mov       al,bl
+[ 428]    06BD: E6 08                                 	out       08h,al
+[ 429]    06BF: B0 01                                 	mov       al,01
+[ 430]    06C1: E6 0C                                 	out       0Ch,al
+[ 431]    06C3: E8 00 02                              	call      sub1
+[ 432]        :                                       
+[ 433]    06C6: B0 07                                 	mov       al,07h
+[ 434]    06C8: E6 0C                                 	out       0Ch,al
+[ 435]    06CA: E8 F9 01                              	call      sub1
+[ 436]    06CD: B0 05                                 	mov       al,05h
+[ 437]    06CF: E6 0C                                 	out       0Ch,al
+[ 438]    06D1: E8 F2 01                              	call      sub1
+[ 439]    06D4: B0 05                                 	mov       al,05h
+[ 440]    06D6: E6 0C                                 	out       0Ch,al
+[ 441]    06D8: E8 EB 01                              	call      sub1
+[ 442]    06DB: B0 DF                                 	mov       al,0DFh
+[ 443]    06DD: E6 08                                 	out       08h,al
+[ 444]    06DF: B0 01                                 	mov       al,01
+[ 445]    06E1: E6 0C                                 	out       0Ch,al
+[ 446]    06E3: E8 E0 01                              	call      sub1
+[ 447]        :                                       
+[ 448]        :                                       
+[ 449]    06E6: B0 07                                 	mov       al,07h
+[ 450]    06E8: E6 0C                                 	out       0Ch,al
+[ 451]    06EA: E8 D9 01                              	call      sub1
+[ 452]    06ED: B0 05                                 	mov       al,05h
+[ 453]    06EF: E6 0C                                 	out       0Ch,al
+[ 454]    06F1: E8 D2 01                              	call      sub1
+[ 455]    06F4: B0 05                                 	mov       al,05h
+[ 456]    06F6: E6 0C                                 	out       0Ch,al
+[ 457]    06F8: E8 CB 01                              	call      sub1
+[ 458]    06FB: B0 43                                 	mov       al,'C'
+[ 459]    06FD: E6 08                                 	out       08h,al
+[ 460]    06FF: B0 01                                 	mov       al,01
+[ 461]    0701: E6 0C                                 	out       0Ch,al
+[ 462]    0703: E8 C0 01                              	call      sub1
+[ 463]        :                                       
+[ 464]    0706: B0 C0                                 	mov al,0c0h
+[ 465]    0708: E6 08                                 	out 08h,al
+[ 466]    070A: B0 04                                 	mov al,04h
+[ 467]    070C: E6 0A                                 	out 0ah,al			;shifting to next line
+[ 468]    070E: E8 B5 01                              	call sub1
+[ 469]    0711: B0 08                                 	mov al,08h
+[ 470]    0713: E6 0A                                 	out 0ah,al
+[ 471]    0715: E8 AE 01                              	call sub1
+[ 472]        :                                       
+[ 473]    0718: B0 07                                 	mov       al,07h
+[ 474]    071A: E6 0C                                 	out       0Ch,al
+[ 475]    071C: E8 A7 01                              	call      sub1
+[ 476]    071F: B0 05                                 	mov       al,05h
+[ 477]    0721: E6 0C                                 	out       0Ch,al
+[ 478]    0723: E8 A0 01                              	call      sub1
+[ 479]    0726: B0 05                                 	mov       al,05h
+[ 480]    0728: E6 0C                                 	out       0Ch,al
+[ 481]    072A: E8 99 01                              	call      sub1
+[ 482]    072D: B0 48                                 	mov       al,'H'
+[ 483]    072F: E6 08                                 	out       08h,al
+[ 484]    0731: B0 01                                 	mov       al,01
+[ 485]    0733: E6 0C                                 	out       0Ch,al
+[ 486]    0735: E8 8E 01                              	call      sub1
+[ 487]        :                                       
+[ 488]    0738: B0 07                                 	mov       al,07h	
+[ 489]    073A: E6 0C                                 	out       0Ch,al
+[ 490]    073C: E8 87 01                              	call      sub1
+[ 491]    073F: B0 05                                 	mov       al,05h
+[ 492]    0741: E6 0C                                 	out       0Ch,al
+[ 493]    0743: E8 80 01                              	call      sub1
+[ 494]    0746: B0 05                                 	mov       al,05h
+[ 495]    0748: E6 0C                                 	out       0Ch,al
+[ 496]    074A: E8 79 01                              	call      sub1
+[ 497]    074D: B0 75                                 	mov       al,'u'
+[ 498]    074F: E6 08                                 	out       08h,al
+[ 499]    0751: B0 01                                 	mov       al,01
+[ 500]    0753: E6 0C                                 	out       0Ch,al
+[ 501]    0755: E8 6E 01                              	call      sub1
+[ 502]        :                                       	
+[ 503]    0758: B0 07                                 	mov       al,07h
+[ 504]    075A: E6 0C                                 	out       0Ch,al
+[ 505]    075C: E8 67 01                              	call      sub1
+[ 506]    075F: B0 05                                 	mov       al,05h
+[ 507]    0761: E6 0C                                 	out       0Ch,al
+[ 508]    0763: E8 60 01                              	call      sub1
+[ 509]    0766: B0 05                                 	mov       al,05h
+[ 510]    0768: E6 0C                                 	out       0Ch,al
+[ 511]    076A: E8 59 01                              	call      sub1
+[ 512]    076D: B0 6D                                 	mov       al,'m'
+[ 513]    076F: E6 08                                 	out       08h,al
+[ 514]    0771: B0 01                                 	mov       al,01
+[ 515]    0773: E6 0C                                 	out       0Ch,al
+[ 516]    0775: E8 4E 01                              	call      sub1
+[ 517]        :                                       	
+[ 518]    0778: B0 07                                 	mov       al,07h
+[ 519]    077A: E6 0C                                 	out       0Ch,al
+[ 520]    077C: E8 47 01                              	call      sub1
+[ 521]    077F: B0 05                                 	mov       al,05h
+[ 522]    0781: E6 0C                                 	out       0Ch,al
+[ 523]    0783: E8 40 01                              	call      sub1
+[ 524]    0786: B0 05                                 	mov       al,05h
+[ 525]    0788: E6 0C                                 	out       0Ch,al
+[ 526]    078A: E8 39 01                              	call      sub1
+[ 527]    078D: B0 69                                 	mov       al,'i'
+[ 528]    078F: E6 08                                 	out       08h,al
+[ 529]    0791: B0 01                                 	mov       al,01
+[ 530]    0793: E6 0C                                 	out       0Ch,al
+[ 531]    0795: E8 2E 01                              	call      sub1
+[ 532]        :                                       
+[ 533]    0798: B0 07                                 	mov       al,07h
+[ 534]    079A: E6 0C                                 	out       0Ch,al
+[ 535]    079C: E8 27 01                              	call      sub1
+[ 536]    079F: B0 05                                 	mov       al,05h
+[ 537]    07A1: E6 0C                                 	out       0Ch,al
+[ 538]    07A3: E8 20 01                              	call      sub1
+[ 539]    07A6: B0 05                                 	mov       al,05h
+[ 540]    07A8: E6 0C                                 	out       0Ch,al
+[ 541]    07AA: E8 19 01                              	call      sub1
+[ 542]    07AD: B0 A0                                 	mov       al,0A0h
+[ 543]    07AF: E6 08                                 	out       08h,al
+[ 544]    07B1: B0 01                                 	mov       al,01
+[ 545]    07B3: E6 0C                                 	out       0Ch,al
+[ 546]    07B5: E8 0E 01                              	call      sub1
+[ 547]        :                                       
+[ 548]    07B8: B0 07                                 	mov       al,07h
+[ 549]    07BA: E6 0C                                 	out       0Ch,al
+[ 550]    07BC: E8 07 01                              	call      sub1
+[ 551]    07BF: B0 05                                 	mov       al,05h
+[ 552]    07C1: E6 0C                                 	out       0Ch,al
+[ 553]    07C3: E8 00 01                              	call      sub1
+[ 554]    07C6: B0 05                                 	mov       al,05h	
+[ 555]    07C8: E6 0C                                 	out       0Ch,al
+[ 556]    07CA: E8 F9 00                              	call      sub1
+[ 557]    07CD: B0 A0                                 	mov       al,0A0h
+[ 558]    07CF: E6 08                                 	out       08h,al
+[ 559]    07D1: B0 01                                 	mov       al,01
+[ 560]    07D3: E6 0C                                 	out       0Ch,al
+[ 561]    07D5: E8 EE 00                              	call      sub1
+[ 562]        :                                       	
+[ 563]    07D8: B0 07                                 	mov       al,07h
+[ 564]    07DA: E6 0C                                 	out       0Ch,al
+[ 565]    07DC: E8 E7 00                              	call      sub1
+[ 566]    07DF: B0 05                                 	mov       al,05h
+[ 567]    07E1: E6 0C                                 	out       0Ch,al
+[ 568]    07E3: E8 E0 00                              	call      sub1
+[ 569]    07E6: B0 05                                 	mov       al,05h
+[ 570]    07E8: E6 0C                                 	out       0Ch,al
+[ 571]    07EA: E8 D9 00                              	call      sub1
+[ 572]    07ED: B0 A0                                 	mov       al,0A0h
+[ 573]    07EF: E6 08                                 	out       08h,al
+[ 574]    07F1: B0 01                                 	mov       al,01
+[ 575]    07F3: E6 0C                                 	out       0Ch,al
+[ 576]    07F5: E8 CE 00                              	call      sub1
+[ 577]    07F8: B0 07                                 	mov       al,07h
+[ 578]    07FA: E6 0C                                 	out       0Ch,al
+[ 579]    07FC: E8 C7 00                              	call      sub1
+[ 580]    07FF: B0 05                                 	mov       al,05h
+[ 581]    0801: E6 0C                                 	out       0Ch,al
+[ 582]    0803: E8 C0 00                              	call      sub1
+[ 583]    0806: B0 05                                 	mov       al,05h
+[ 584]    0808: E6 0C                                 	out       0Ch,al
+[ 585]    080A: E8 B9 00                              	call      sub1
+[ 586]    080D: B0 A0                                 	mov       al,0A0h
+[ 587]    080F: E6 08                                 	out       08h,al
+[ 588]    0811: B0 01                                 	mov       al,01
+[ 589]    0813: E6 0C                                 	out       0Ch,al
+[ 590]    0815: E8 AE 00                              	call      sub1
+[ 591]        :                                       
+[ 592]    0818: B0 07                                 	mov       al,07h
+[ 593]    081A: E6 0C                                 	out       0Ch,al
+[ 594]    081C: E8 A7 00                              	call      sub1
+[ 595]    081F: B0 05                                 	mov       al,05h
+[ 596]    0821: E6 0C                                 	out       0Ch,al
+[ 597]    0823: E8 A0 00                              	call      sub1
+[ 598]    0826: B0 05                                 	mov       al,05h
+[ 599]    0828: E6 0C                                 	out       0Ch,al
+[ 600]    082A: E8 99 00                              	call      sub1
+[ 601]    082D: B0 A0                                 	mov       al,0A0h
+[ 602]    082F: E6 08                                 	out       08h,al
+[ 603]    0831: B0 01                                 	mov       al,01
+[ 604]    0833: E6 0C                                 	out       0Ch,al
+[ 605]    0835: E8 8E 00                              	call      sub1
+[ 606]        :                                       
+[ 607]    0838: B0 07                                 	mov       al,07h
+[ 608]    083A: E6 0C                                 	out       0Ch,al
+[ 609]    083C: E8 87 00                              	call      sub1
+[ 610]    083F: B0 05                                 	mov       al,05h
+[ 611]    0841: E6 0C                                 	out       0Ch,al
+[ 612]    0843: E8 80 00                              	call      sub1
+[ 613]    0846: B0 05                                 	mov       al,05h
+[ 614]    0848: E6 0C                                 	out       0Ch,al
+[ 615]    084A: E8 79 00                              	call      sub1
+[ 616]    084D: B0 A0                                 	mov       al,0A0h
+[ 617]    084F: E6 08                                 	out       08h,al
+[ 618]    0851: B0 01                                 	mov       al,01
+[ 619]    0853: E6 0C                                 	out       0Ch,al
+[ 620]    0855: E8 6E 00                              	call     sub1
+[ 621]        :                                       
+[ 622]        :                                       
+[ 623]    0858: B0 07                                 	mov       al,07h
+[ 624]    085A: E6 0C                                 	out       0Ch,al
+[ 625]    085C: E8 67 00                              	call      sub1
+[ 626]    085F: B0 05                                 	mov       al,05h
+[ 627]    0861: E6 0C                                 	out       0Ch,al
+[ 628]    0863: E8 60 00                              	call      sub1
+[ 629]    0866: B0 05                                 	mov       al,05h
+[ 630]    0868: E6 0C                                 	out       0Ch,al
+[ 631]    086A: E8 59 00                              	call      sub1
+[ 632]    086D: 8A C6                                 	mov       al,dh
+[ 633]    086F: E6 08                                 	out       08h,al
+[ 634]    0871: B0 01                                 	mov       al,01
+[ 635]    0873: E6 0C                                 	out       0Ch,al
+[ 636]    0875: E8 4E 00                              	call      sub1
+[ 637]        :                                       
+[ 638]    0878: B0 07                                 	mov       al,07h
+[ 639]    087A: E6 0C                                 	out       0Ch,al
+[ 640]    087C: E8 47 00                              	call      sub1
+[ 641]    087F: B0 05                                 	mov       al,05h
+[ 642]    0881: E6 0C                                 	out       0Ch,al	
+[ 643]    0883: E8 40 00                              	call      sub1
+[ 644]    0886: B0 05                                 	mov       al,05h
+[ 645]    0888: E6 0C                                 	out       0Ch,al
+[ 646]    088A: E8 39 00                              	call      sub1
+[ 647]    088D: 8A C2                                 	mov       al,dl
+[ 648]    088F: E6 08                                 	out       08h,al
+[ 649]    0891: B0 01                                 	mov       al,01
+[ 650]    0893: E6 0C                                 	out       0Ch,al
+[ 651]    0895: E8 2E 00                              	call      sub1
+[ 652]        :                                       
+[ 653]    0898: B0 07                                 	mov       al,07h
+[ 654]    089A: E6 0C                                 	out       0Ch,al
+[ 655]    089C: E8 27 00                              	call      sub1
+[ 656]    089F: B0 05                                 	mov       al,05h
+[ 657]    08A1: E6 0C                                 	out       0Ch,al
+[ 658]    08A3: E8 20 00                              	call      sub1
+[ 659]    08A6: B0 05                                 	mov       al,05h
+[ 660]    08A8: E6 0C                                 	out       0Ch,al
+[ 661]    08AA: E8 19 00                              	call      sub1
+[ 662]    08AD: B0 25                                 	mov       al,'%'
+[ 663]    08AF: E6 08                                 	out       08h,al
+[ 664]    08B1: B0 01                                 	mov       al,01
+[ 665]    08B3: E6 0C                                 	out       0Ch,al
+[ 666]    08B5: E8 0E 00                              	call      sub1
+[ 667]    08B8: C3                                    	ret
+[ 668]        :                                       display_lcd endp
+[ 669]        :                                       
+[ 670]    08B9:                                       convBCD proc near
+[ 671]    08B9: 8A D8                                 mov       bl,al
+[ 672]    08BB: B0 00                                 		  mov       al,0
+[ 673]    08BD: 04 01                                 x3:		  add       al,01
+[ 674]    08BF: 27                                    		  daa
+[ 675]    08C0: FE CB                                 		  dec       bl
+[ 676]    08C2: 75 F9                                 		  jnz       x3
+[ 677]    08C4: 8A D8                                 		  mov 		bl,al
+[ 678]        :                                       
+[ 679]        :                                       convBCD ENDP
+[ 680]        :                                       
+[ 681]        :                                       
+[ 682]    08C6: B9 C8 00                              sub1:     mov       cx,200
+[ 683]    08C9: E2 FE                                 xl:       loop      xl
+[ 684]    08CB: C3                                    ret
+[ 685]        :                                       
+[ 686]        :                                       ;sub-routine for 2 minute delay
+[ 687]    08CC: B2 04                                 sub2:	  mov       dl,4
+[ 688]    08CE: B9 50 C3                              xm:       mov		cx,50000 ; delay generated will be approx 0.45 secs
+[ 689]    08D1: E2 FE                                 xn:		  loop		xn
+[ 690]    08D3: FE CA                                 dec       dl
+[ 691]    08D5: 75 F7                                 jnz       xm
+[ 692]    08D7: C3                                    		  ret
+[ 693]        :                                       
+[ 694]    08D8:                                       ad_isr:
+[ 695]    08D8: 50                                    push      ax
+[ 696]    08D9: 53                                    push      bx
+[ 697]        :                                       ;di is decremented to show nmi isr is executed
+[ 698]    08DA: 4F                                    dec       di
+[ 699]    08DB: 0C 08                                 or		al,00001000b
+[ 700]    08DD: E6 04                                 		  out		04h,al
+[ 701]    08DF: E4 02                                 		  in        al,02h
+[ 702]    08E1: 88 04                                 		  mov       [si],al
+[ 703]    08E3: 5B                                    		  pop       bx
+[ 704]    08E4: 58                                    		  pop       ax
+[ 705]    08E5: CF                                    iret
+[ 706]        :                                       
+[ 707]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

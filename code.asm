@@ -1,0 +1,709 @@
+#make_bin#
+
+#LOAD_SEGMENT=FFFFh#
+#LOAD_OFFSET=0000h#
+
+#CS=0000h#
+#IP=0000h#
+
+#DS=0000h#
+#ES=0000h#
+
+#SS=0000h#
+#SP=FFFEh#
+
+#AX=0000h#
+#BX=0000h#
+#CX=0000h#
+#DX=0000h#
+#SI=0000h#
+#DI=0000h#
+#BP=0000h#
+
+; add your code here
+;jump to the start of the code - reset address is kept at 0000:0000
+;as this is only a limited simulation
+         jmp     st1
+;jmp st1 - takes 3 bytes followed by nop that is 4 bytes
+         nop
+;int 1 is not used so 1 x4 = 00004h - it is stored with 0
+         dw      0000
+         dw      0000
+;eoc - is used as nmi - ip value points to ad_isr and cs value will
+;remain at 0000
+         dw      ad_isr
+         dw      0000
+;int 3 to int 255 unused so ip and cs intialized to 0000
+;from 3x4 = 0000cH
+		 db     1012 dup(0)
+
+		 current_temperature db ?;current temperature
+		 current_humidity db ?;current humidity
+		 ideal_humidity db ?;ideal humidity
+		 negative_flag db 00h
+
+		 port1A equ 00h
+		 port1B equ 02h
+		 port1C equ 04h ;PC4 - SOC OF ADC
+;PC0, PC1, PC2 connected to ADD OF ADC (USED FOR SELECTING THE ;FIRST & SECOND INPUT CHANNEL OF ADC)
+		 creg1 equ 06h ;control register (8255_1)
+
+;8253 for generating clock signal to ADC
+		cnt0 equ 10h
+		cnt1 equ 12h
+		cnt2 equ 14h
+		creg3 equ 16h
+
+st1:      cli
+; intialize ds, es,ss to start of RAM
+          mov       ax,0200h
+          mov       ds,ax
+          mov       es,ax
+          mov       ss,ax
+          mov       sp,0FFFEH
+          mov       si,0000
+
+;intialise portb as input and portC as ouput of 8255_1 connected to ADC
+          mov       al,82h
+          out       06h,al
+
+;intialize porta  as input & b& c as output of 8255_2 LCD
+          mov       al,88h
+          out       0eh,al
+
+;initialise 8254
+		mov			al,00110110b ; write 16 bit count for counter0 mode3
+		out			16h , al
+		mov			al,5
+		out			10H , al
+		mov			al,0
+		out			10H , al
+
+main:
+		call getHumdt
+		call getTemp
+		call display_LCD
+		mov 	al, ideal_humidity
+		mov		bl, current_humidity
+		cmp		bl, al
+		ja		inc_hum
+		mov 	al,0eh
+		out 	06h,al
+		call 	sub1
+		call 	sub2
+		jmp 	main
+inc_hum:
+		mov 	al,0fh
+		out		06h,al
+		call 	sub1
+		call	sub2
+		jmp		main
+getTemp proc near
+
+;start with channel 0
+    	  mov       dh,0
+;select channel
+x0:		  mov       di,1
+;di is made 1 to check whether nmi_isr is executed
+          mov		al,dh
+		  out		04h,al
+;give ale
+          or        al,00100000b
+		  out       04h,al
+
+;give soc
+          or		al,00010000b
+		  out		04h,al
+
+		  nop
+		  nop
+		  nop
+		  nop
+;make soc 0
+		  and       al,11101111b
+		  out       04h,al
+;make ale 0
+		  and       al,11011111b
+		  out       04h,al
+x4:		  cmp       di,0
+		  jnz       x4
+		  mov 		al,[si]
+		  mov		current_temperature, al
+		  mov		ideal_humidity, al
+		  sub		current_temperature, 40
+		  cmp 		current_temperature, 0
+		  jge 		pos
+		  mov		negative_flag, 01h
+		  mov		al, ideal_humidity
+		  mov		cl, 40
+		  sub		cl, al
+		  mov		al, cl
+		  jmp	 	con
+
+pos:
+		  mov		negative_flag, 00h
+		  mov		al, current_temperature
+con:
+		  call		convBCD
+		  ret		getTemp
+endp
+
+getHumdt proc near
+
+;start with channel 1
+    	  mov       dh,1
+;select channel
+		  mov       di,1
+;di is made 1 to check whether nmi_isr is executed
+          mov		al,dh
+		  out		04h,al
+;give ale
+          or        al,00100000b
+		  out       04h,al
+
+;give soc
+          or		al,00010000b
+		  out		04h,al
+
+		  nop
+		  nop
+		  nop
+		  nop
+;make soc 0
+		  and       al,11101111b
+		  out       04h,al
+;make ale 0
+		  and       al,11011111b
+		  out       04h,al
+x100:	  cmp       di,0
+		  jnz       x100
+		  mov 		al,[si]
+		  mov		current_humidity, al
+		  call		convBCD
+		  mov		dx, bx
+		  ret		getHumdt
+		  endp
+
+display_lcd PROC NEAR ;Display temperature and humidity on LCD
+		push ax
+		push cx
+		push si
+		call  sub1
+    ;set mode for 2 line - to doxq so - make rw - 0 first
+    ;followed by rs
+    ;followed by e
+    ;this has to be followed for all commands
+      mov       al,07h
+    out       04h,al
+    call      sub1
+
+    mov       al,05h  ;enable high
+    out       04h,al
+    call      sub1
+
+    mov       al,04h  ;enable low
+    out       04h,al
+    call      sub1
+
+    mov       al,38h   ;initialization lcd
+    out       00h,al
+    mov       al,00h
+    out       04h,al
+    call      sub1
+    ;set mode agian - ha sto be done twice
+    mov       al,07h
+    out       0Ch,al
+        call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,04h
+    out       0Ch,al
+    call      sub1
+    mov       al,38h   ;diplay blinking at cursor
+    out       08h,al
+    mov       al,00h
+    out       0Ch,al
+    call      sub1
+    ;command to display blinking cursor - 0fh
+
+    mov       al,07h
+    out       0Ch,al
+    call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,04h
+    out       0Ch,al
+    call      sub1
+    mov       al,0fh
+    out       08h,al
+    mov       al,00h
+    out       0Ch,al
+    call      sub1
+    ;increment cursor command  - 06h
+    mov       al,07h
+    out       0Ch,al
+    call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,04h
+    out       0Ch,al
+    call      sub1
+    mov       al,06h
+    out       08h,al
+    mov       al,00h
+    out       0Ch,al
+    call      sub1
+    ;clear display  command - 01h
+    mov       al,07h
+    out       0Ch,al
+        call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,04h
+    out       0Ch,al
+    call      sub1
+    mov       al,01h
+    out       08h,al
+    mov       al,00h
+    out       0Ch,al
+    call      sub1
+    ;move cursor to line 1 position 1 command - 80h
+    mov       al,07h
+    out       0Ch,al
+        call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,04h
+    out       0Ch,al
+    call      sub1
+    mov       al,80h
+    out       08h,al
+    mov       al,00h
+    out       0Ch,al
+    call      sub1
+
+
+
+    mov       al,07h
+    out       0Ch,al
+        call      sub1
+        mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,'T'
+    out       08h,al
+    mov       al,01
+    out       0Ch,al
+    call      sub1
+
+    mov       al,07h
+    out       0Ch,al
+        call      sub1
+        mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,'e'
+    out       08h,al
+    mov       al,01
+    out       0Ch,al
+    call      sub1
+
+
+    mov       al,07h
+    out       0Ch,al
+        call      sub1
+        mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,'m'
+    out       08h,al
+    mov       al,01
+    out       0Ch,al
+    call      sub1
+
+    mov       al,07h
+    out       0Ch,al
+        call      sub1
+        mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,'p'
+    out       08h,al
+    mov       al,01
+    out       0Ch,al
+    call      sub1
+
+
+    mov       al,07h
+    out       0Ch,al
+        call      sub1
+        mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,05h
+    out       0Ch,al
+    call      sub1
+    mov       al,20h
+    out       08h,al
+    mov       al,01
+    out       0Ch,al
+    call      sub1  ;space
+
+cmp negative_flag,00h
+jz hh
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,'-'
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+jmp nn
+hh:mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,20h
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+;mov bx,current_temperature
+nn: mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,bh  ;prints bh
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,bl
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,0DFh
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,'C'
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov al,0c0h
+out 08h,al
+mov al,04h
+out 0ah,al			;shifting to next line
+call sub1
+mov al,08h
+out 0ah,al
+call sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,'H'
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,'u'
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,'m'
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,'i'
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,0A0h
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,0A0h
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,0A0h
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,0A0h
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,0A0h
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,0A0h
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,dh
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,dl
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+
+mov       al,07h
+out       0Ch,al
+    call      sub1
+    mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,05h
+out       0Ch,al
+call      sub1
+mov       al,'%'
+out       08h,al
+mov       al,01
+out       0Ch,al
+call      sub1
+ret
+display_lcd endp
+
+convBCD proc near
+mov       bl,al
+		  mov       al,0
+x3:		  add       al,01
+		  daa
+		  dec       bl
+		  jnz       x3
+		  mov 		bl,al
+
+convBCD ENDP
+
+
+sub1:     mov       cx,200
+xl:       loop      xl
+          ret
+
+;sub-routine for 2 minute delay
+sub2:	  mov       dl,4
+xm:       mov		cx,50000 ; delay generated will be approx 0.45 secs
+xn:		  loop		xn
+          dec       dl
+          jnz       xm
+		  ret
+
+ad_isr:
+          push      ax
+          push      bx
+;di is decremented to show nmi isr is executed
+          dec       di
+          or		al,00001000b
+		  out		04h,al
+		  in        al,02h
+		  mov       [si],al
+		  pop       bx
+		  pop       ax
+          iret
